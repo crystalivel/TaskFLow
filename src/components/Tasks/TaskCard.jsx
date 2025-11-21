@@ -4,7 +4,9 @@ import { useNavigate } from 'react-router-dom'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { CheckCircle2, Circle, Edit2, Trash2, Calendar, Clock, AlertCircle } from 'lucide-react'
+import { Checkbox } from "@/components/ui/checkbox"
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
+import { CheckCircle2, Circle, Edit2, Trash2, Calendar, Clock, AlertCircle, ChevronDown, ChevronUp } from 'lucide-react'
 
 // Helper function to calculate time remaining
 const getTimeRemaining = (deadline) => {
@@ -68,13 +70,20 @@ const getTimeRemaining = (deadline) => {
 }
 
 export default function TaskCard({ task }) {
-    const { toggleTask, deleteTask } = useTask()
+    const { toggleTask, deleteTask, editTask } = useTask()
     const navigate = useNavigate()
 
     // State for live countdown updates
     const [currentTime, setCurrentTime] = useState(new Date())
+    const [isStepsOpen, setIsStepsOpen] = useState(false)
 
     const timeRemaining = getTimeRemaining(task.deadline)
+
+    // Calculate step progress
+    const steps = task.steps || []
+    const completedSteps = steps.filter(s => s.completed).length
+    const totalSteps = steps.length
+    const progress = totalSteps === 0 ? 0 : Math.round((completedSteps / totalSteps) * 100)
 
     // Update countdown every second if deadline is less than 1 hour
     useEffect(() => {
@@ -99,6 +108,15 @@ export default function TaskCard({ task }) {
 
     const handleEdit = () => {
         navigate(`/task/${task.id}`)
+    }
+
+    const handleStepToggle = (stepIndex) => {
+        const updatedSteps = [...steps]
+        updatedSteps[stepIndex] = {
+            ...updatedSteps[stepIndex],
+            completed: !updatedSteps[stepIndex].completed
+        }
+        editTask({ ...task, steps: updatedSteps })
     }
 
     // Define colors based on time remaining status
@@ -201,6 +219,11 @@ export default function TaskCard({ task }) {
                                     {timeRemaining.text}
                                 </Badge>
                             )}
+                            {totalSteps > 0 && (
+                                <Badge className="bg-primary/20 text-primary border border-primary hover:bg-primary/30">
+                                    {completedSteps}/{totalSteps} Steps • {progress}%
+                                </Badge>
+                            )}
                         </div>
                     </div>
 
@@ -213,7 +236,7 @@ export default function TaskCard({ task }) {
                                 onClick={handleToggle}
                                 className="border-green-500 text-green-500 hover:bg-green-500 hover:text-white hover:border-green-500 transition-all"
                             >
-                                <CheckCircle2 className="w-4 h-4 sm:mr-2" />
+                                <CheckCircle2 className="w-4 h-4 sm:mr-2 flex" />
                                 <span className="hidden sm:inline">Complete</span>
                             </Button>
                         ) : (
@@ -270,6 +293,55 @@ export default function TaskCard({ task }) {
                             })}
                         </span>
                     </div>
+                )}
+
+                {/* Steps Collapsible Section */}
+                {totalSteps > 0 && (
+                    <Collapsible open={isStepsOpen} onOpenChange={setIsStepsOpen} className="space-y-2">
+                        <div className="flex items-center justify-between p-3 rounded-lg border border-border bg-muted/50">
+                            <div className="flex items-center gap-3 flex-1">
+                                <div className="flex-1">
+                                    <div className="flex items-center justify-between mb-2">
+                                        <span className="text-sm font-medium text-foreground">Progress</span>
+                                        <span className="text-sm font-semibold text-primary">{progress}%</span>
+                                    </div>
+                                    <div className="h-2 bg-secondary rounded-full overflow-hidden">
+                                        <div
+                                            className="h-full bg-primary transition-all duration-300 ease-in-out"
+                                            style={{ width: `${progress}%` }}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <CollapsibleTrigger asChild>
+                                <Button variant="ghost" size="sm" className="ml-2 hover:bg-primary/10">
+                                    {isStepsOpen ? (
+                                        <ChevronUp className="w-4 h-4 text-primary" />
+                                    ) : (
+                                        <ChevronDown className="w-4 h-4 text-primary" />
+                                    )}
+                                </Button>
+                            </CollapsibleTrigger>
+                        </div>
+                        <CollapsibleContent className="space-y-2">
+                            {steps.map((step, index) => (
+                                <div
+                                    key={index}
+                                    className="flex items-center gap-3 p-3 rounded-lg border border-border bg-background hover:bg-muted/50 transition-colors"
+                                >
+                                    <Checkbox
+                                        checked={step.completed}
+                                        onCheckedChange={() => handleStepToggle(index)}
+                                        className="w-5 h-5 border-2 border-primary data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground data-[state=checked]:border-primary hover:border-primary/70 transition-all duration-200 cursor-pointer flex items-center justify-center"
+                                    />
+
+                                    <span className={`text-sm flex-1 ${step.completed ? 'line-through text-muted-foreground' : 'text-foreground'}`}>
+                                        {step.text}
+                                    </span>
+                                </div>
+                            ))}
+                        </CollapsibleContent>
+                    </Collapsible>
                 )}
             </CardContent>
         </Card>
