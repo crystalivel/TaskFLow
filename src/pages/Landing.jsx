@@ -1,6 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button } from "@/components/ui/button"
+import ThemeToggle from '../components/ThemeToggle'
 import { CheckCircle2, Clock, Target, Zap, ArrowRight, Calendar } from 'lucide-react'
 
 export default function Landing() {
@@ -46,6 +47,7 @@ export default function Landing() {
                         <Calendar className="w-6 h-6 text-[#00ADB5]" />
                         <h1 className="text-2xl font-bold text-[#EEEEEE]">TaskFlow</h1>
                     </div>
+                    <ThemeToggle />
                     <Button
                         variant="ghost"
                         onClick={handleLogin}
