@@ -39,19 +39,19 @@ export default function Landing() {
     ]
 
     return (
-        <div className="min-h-screen bg-[#222831] text-[#EEEEEE] overflow-x-hidden">
+        <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
             {/* Navigation */}
-            <nav className="border-b border-[#393E46] bg-[#222831]/95 backdrop-blur-sm sticky top-0 z-50">
+            <nav className="border-b border-border bg-background/95 backdrop-blur-sm sticky top-0 z-50">
                 <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                        <Calendar className="w-6 h-6 text-[#00ADB5]" />
-                        <h1 className="text-2xl font-bold text-[#EEEEEE]">TaskFlow</h1>
+                        <Calendar className="w-6 h-6 text-primary" />
+                        <h1 className="text-2xl font-bold text-foreground">TaskFlow</h1>
                     </div>
                     <ThemeToggle />
                     <Button
                         variant="ghost"
                         onClick={handleLogin}
-                        className="bg-[#393E46] text-[#EEEEEE] hover:text-[#00ADB5] hover:bg-[#393E46]"
+                        className="text-foreground hover:text-primary hover:bg-muted"
                     >
                         Sign In
                     </Button>
@@ -63,20 +63,20 @@ export default function Landing() {
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center space-y-8 max-w-4xl mx-auto">
                         {/* Badge */}
-                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#393E46] border border-[#00ADB5]/20">
-                            <Zap className="w-4 h-4 text-[#00ADB5]" />
-                            <span className="text-sm text-[#EEEEEE]">Smart Task Management</span>
+                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-muted border border-primary/20">
+                            <Zap className="w-4 h-4 text-primary" />
+                            <span className="text-sm text-foreground">Smart Task Management</span>
                         </div>
 
                         {/* Headline */}
                         <h1 className="text-5xl md:text-6xl lg:text-7xl font-black leading-tight">
                             Organize Your Tasks,
                             <br />
-                            <span className="text-[#00ADB5]">Achieve Your Goals</span>
+                            <span className="text-primary">Achieve Your Goals</span>
                         </h1>
 
                         {/* Subheadline */}
-                        <p className="text-xl md:text-2xl text-[#EEEEEE]/70 max-w-2xl mx-auto leading-relaxed">
+                        <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
                             A powerful yet simple task manager with real-time deadlines, priority tracking, and beautiful design.
                         </p>
 
@@ -85,7 +85,7 @@ export default function Landing() {
                             <Button
                                 size="lg"
                                 onClick={handleGetStarted}
-                                className="bg-[#00ADB5] hover:bg-[#00ADB5]/90 text-[#222831] px-8 py-6 text-lg font-semibold rounded-xl shadow-lg hover:shadow-[#00ADB5]/30 transition-all duration-300 group"
+                                className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-6 text-lg font-semibold rounded-xl shadow-lg hover:shadow-primary/30 transition-all duration-300 group"
                             >
                                 Get Started Free
                                 <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
@@ -94,20 +94,20 @@ export default function Landing() {
                                 variant="outline"
                                 size="lg"
                                 onClick={handleLogin}
-                                className="border-2 border-[#393E46] hover:border-[#00ADB5] text-[#EEEEEE] hover:bg-[#393E46] px-8 py-6 text-lg font-semibold rounded-xl transition-all duration-300"
+                                className="border-2 border-muted hover:border-primary text-foreground hover:bg-muted px-8 py-6 text-lg font-semibold rounded-xl transition-all duration-300"
                             >
                                 Sign In
                             </Button>
                         </div>
 
                         {/* Social Proof */}
-                        <div className="pt-8 flex items-center justify-center gap-8 text-sm text-[#EEEEEE]/50">
+                        <div className="pt-8 flex items-center justify-center gap-8 text-sm text-muted-foreground">
                             <div className="flex items-center gap-2">
-                                <CheckCircle2 className="w-4 h-4 text-[#00ADB5]" />
+                                <CheckCircle2 className="w-4 h-4 text-primary" />
                                 <span>No credit card required</span>
                             </div>
                             <div className="flex items-center gap-2">
-                                <CheckCircle2 className="w-4 h-4 text-[#00ADB5]" />
+                                <CheckCircle2 className="w-4 h-4 text-primary" />
                                 <span>Free forever</span>
                             </div>
                         </div>
@@ -116,13 +116,13 @@ export default function Landing() {
             </section>
 
             {/* Features Section */}
-            <section className="relative px-6 py-20 bg-[#393E46]/20">
+            <section className="relative px-6 py-20 bg-muted/20">
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-16 space-y-4">
-                        <h2 className="text-4xl md:text-5xl font-bold text-[#EEEEEE]">
+                        <h2 className="text-4xl md:text-5xl font-bold text-foreground">
                             Everything You Need
                         </h2>
-                        <p className="text-xl text-[#EEEEEE]/60 max-w-2xl mx-auto">
+                        <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
                             Powerful features designed to boost your productivity
                         </p>
                     </div>
@@ -131,17 +131,17 @@ export default function Landing() {
                         {features.map((feature, index) => (
                             <div
                                 key={index}
-                                className="group p-6 rounded-2xl bg-[#393E46] border border-[#393E46] hover:border-[#00ADB5] transition-all duration-300 hover:shadow-lg hover:shadow-[#00ADB5]/10"
+                                className="group p-6 rounded-2xl bg-card border border-border hover:border-primary transition-all duration-300 hover:shadow-lg hover:shadow-primary/10"
                             >
-                                <div className="w-16 h-16 rounded-xl bg-[#00ADB5]/10 flex items-center justify-center mb-4 group-hover:bg-[#00ADB5]/20 transition-colors">
-                                    <div className="text-[#00ADB5]">
+                                <div className="w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                                    <div className="text-primary">
                                         {feature.icon}
                                     </div>
                                 </div>
-                                <h3 className="text-xl font-semibold text-[#EEEEEE] mb-2">
+                                <h3 className="text-xl font-semibold text-foreground mb-2">
                                     {feature.title}
                                 </h3>
-                                <p className="text-[#EEEEEE]/60 leading-relaxed">
+                                <p className="text-muted-foreground leading-relaxed">
                                     {feature.description}
                                 </p>
                             </div>
@@ -155,34 +155,34 @@ export default function Landing() {
                 <div className="max-w-7xl mx-auto">
                     <div className="grid md:grid-cols-3 gap-8 text-center">
                         <div className="space-y-2">
-                            <div className="text-5xl font-bold text-[#00ADB5]">Fast</div>
-                            <p className="text-[#EEEEEE]/60">Lightning-quick performance</p>
+                            <div className="text-5xl font-bold text-primary">Fast</div>
+                            <p className="text-muted-foreground">Lightning-quick performance</p>
                         </div>
                         <div className="space-y-2">
-                            <div className="text-5xl font-bold text-[#00ADB5]">Simple</div>
-                            <p className="text-[#EEEEEE]/60">Intuitive and easy to use</p>
+                            <div className="text-5xl font-bold text-primary">Simple</div>
+                            <p className="text-muted-foreground">Intuitive and easy to use</p>
                         </div>
                         <div className="space-y-2">
-                            <div className="text-5xl font-bold text-[#00ADB5]">Free</div>
-                            <p className="text-[#EEEEEE]/60">No hidden costs, forever</p>
+                            <div className="text-5xl font-bold text-primary">Free</div>
+                            <p className="text-muted-foreground">No hidden costs, forever</p>
                         </div>
                     </div>
                 </div>
             </section>
 
             {/* CTA Section */}
-            <section className="relative px-6 py-20 bg-[#393E46]/20">
+            <section className="relative px-6 py-20 bg-muted/20">
                 <div className="max-w-4xl mx-auto text-center space-y-8">
-                    <h2 className="text-4xl md:text-5xl font-bold text-[#EEEEEE]">
+                    <h2 className="text-4xl md:text-5xl font-bold text-foreground">
                         Ready to Get Started?
                     </h2>
-                    <p className="text-xl text-[#EEEEEE]/60">
+                    <p className="text-xl text-muted-foreground">
                         Join thousands of productive people managing their tasks efficiently
                     </p>
                     <Button
                         size="lg"
                         onClick={handleGetStarted}
-                        className="bg-[#00ADB5] hover:bg-[#00ADB5]/90 text-[#222831] px-12 py-6 text-lg font-semibold rounded-xl shadow-lg hover:shadow-[#00ADB5]/30 transition-all duration-300"
+                        className="bg-primary hover:bg-primary/90 text-primary-foreground px-12 py-6 text-lg font-semibold rounded-xl shadow-lg hover:shadow-primary/30 transition-all duration-300"
                     >
                         Start For Free
                     </Button>
@@ -190,8 +190,8 @@ export default function Landing() {
             </section>
 
             {/* Footer */}
-            <footer className="border-t border-[#393E46] px-6 py-8">
-                <div className="max-w-7xl mx-auto text-center text-[#EEEEEE]/40 text-sm">
+            <footer className="border-t border-border px-6 py-8">
+                <div className="max-w-7xl mx-auto text-center text-muted-foreground text-sm">
                     <p>© 2024 TaskFlow. Built with ❤️ for productivity.</p>
                 </div>
             </footer>
