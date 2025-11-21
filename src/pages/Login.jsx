@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { AuthContext } from '../context/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import { z } from 'zod'
@@ -15,8 +15,14 @@ const loginSchema = z.object({
 })
 
 export default function Login() {
-    const { dispatch } = useContext(AuthContext)
+    const { state, dispatch } = useContext(AuthContext)
     const navigate = useNavigate()
+
+    useEffect(() => {
+        if (state.isAuthenticated) {
+            navigate('/dashboard')
+        }
+    }, [state.isAuthenticated, navigate])
 
     const [form, setForm] = useState({
         email: '',
@@ -87,7 +93,6 @@ export default function Login() {
         setErrors({})
         setGeneralError('')
         dispatch({ type: 'login', payload: { name: user.name, email: user.email } })
-        navigate('/dashboard')
     }
 
     const renderFieldIcon = (fieldName) => {
