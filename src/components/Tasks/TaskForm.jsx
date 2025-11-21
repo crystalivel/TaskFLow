@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useForm } from "react-hook-form"
+import { useForm, useFieldArray } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { Button } from "@/components/ui/button"
@@ -21,6 +21,8 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Plus, Trash2 } from "lucide-react"
 
 const formSchema = z.object({
     title: z.string().min(2, {
@@ -31,6 +33,10 @@ const formSchema = z.object({
     deadlineDate: z.string().optional(),
     deadlineHour: z.string().optional(),
     deadlineMinute: z.string().optional(),
+    steps: z.array(z.object({
+        text: z.string().min(1, "Step cannot be empty"),
+        completed: z.boolean().default(false)
+    })).optional()
 })
 
 export default function TaskForm({ defaultValues, onSubmit, isEditing = false }) {
@@ -43,7 +49,10 @@ export default function TaskForm({ defaultValues, onSubmit, isEditing = false })
     // Split existing deadline into date and time if editing
     const getDefaultDate = () => {
         if (defaultValues?.deadline) {
-            return new Date(defaultValues.deadline).toISOString().split('T')[0]
+            const date = new Date(defaultValues.deadline)
+            if (!isNaN(date.getTime())) {
+                return date.toISOString().split('T')[0]
+            }
         }
         return getTodayDate()
     }
@@ -51,7 +60,9 @@ export default function TaskForm({ defaultValues, onSubmit, isEditing = false })
     const getDefaultHour = () => {
         if (defaultValues?.deadline) {
             const date = new Date(defaultValues.deadline)
-            return String(date.getHours()).padStart(2, '0')
+            if (!isNaN(date.getTime())) {
+                return String(date.getHours()).padStart(2, '0')
+            }
         }
         return ''
     }
@@ -59,9 +70,11 @@ export default function TaskForm({ defaultValues, onSubmit, isEditing = false })
     const getDefaultMinute = () => {
         if (defaultValues?.deadline) {
             const date = new Date(defaultValues.deadline)
-            const minutes = date.getMinutes()
-            // Round to nearest 5 minutes
-            return String(Math.round(minutes / 5) * 5).padStart(2, '0')
+            if (!isNaN(date.getTime())) {
+                const minutes = date.getMinutes()
+                // Round to nearest 5 minutes
+                return String(Math.round(minutes / 5) * 5).padStart(2, '0')
+            }
         }
         return ''
     }
@@ -75,7 +88,13 @@ export default function TaskForm({ defaultValues, onSubmit, isEditing = false })
             deadlineDate: getDefaultDate(),
             deadlineHour: getDefaultHour(),
             deadlineMinute: getDefaultMinute(),
+            steps: defaultValues?.steps || []
         },
+    })
+
+    const { fields, append, remove } = useFieldArray({
+        control: form.control,
+        name: "steps"
     })
 
     const handleFormSubmit = (data) => {
@@ -103,9 +122,30 @@ export default function TaskForm({ defaultValues, onSubmit, isEditing = false })
     // Generate minute options (every 5 minutes: 00, 05, 10, ..., 55)
     const minutes = Array.from({ length: 12 }, (_, i) => String(i * 5).padStart(2, '0'))
 
+    const steps = form.watch('steps') || []
+    const completedSteps = steps.filter(s => s.completed).length
+    const totalSteps = steps.length
+    const progress = totalSteps === 0 ? 0 : Math.round((completedSteps / totalSteps) * 100)
+
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(handleFormSubmit)} className="space-y-6">
+                {/* Progress Bar */}
+                {totalSteps > 0 && (
+                    <div className="space-y-2">
+                        <div className="flex justify-between text-sm text-muted-foreground">
+                            <span>Progress</span>
+                            <span>{progress}%</span>
+                        </div>
+                        <div className="h-2 bg-secondary rounded-full overflow-hidden">
+                            <div
+                                className="h-full bg-primary transition-all duration-300 ease-in-out"
+                                style={{ width: `${progress}%` }}
+                            />
+                        </div>
+                    </div>
+                )}
+
                 {/* Title and Priority on Same Row */}
                 <div className="flex gap-4">
                     <FormField
@@ -172,6 +212,65 @@ export default function TaskForm({ defaultValues, onSubmit, isEditing = false })
                         </FormItem>
                     )}
                 />
+
+                {/* Steps Section */}
+                <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                        <FormLabel className="text-foreground">Steps (Optional)</FormLabel>
+                        <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={() => append({ text: "", completed: false })}
+                            className="text-primary border-primary hover:bg-primary/10"
+                        >
+                            <Plus className="w-4 h-4 mr-2" />
+                            Add Step
+                        </Button>
+                    </div>
+                    <div className="space-y-2">
+                        {fields.map((field, index) => (
+                            <div key={field.id} className="flex items-center gap-2">
+                                <FormField
+                                    control={form.control}
+                                    name={`steps.${index}.completed`}
+                                    render={({ field }) => (
+                                        <Checkbox
+                                            checked={field.value}
+                                            onCheckedChange={field.onChange}
+                                            className="border-primary data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                                        />
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name={`steps.${index}.text`}
+                                    render={({ field }) => (
+                                        <FormItem className="flex-1">
+                                            <FormControl>
+                                                <Input
+                                                    {...field}
+                                                    placeholder={`Step ${index + 1}`}
+                                                    className="bg-background border-input text-foreground focus:border-primary"
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <Button
+                                    type="button"
+                                    variant="ghost"
+                                    size="icon"
+                                    onClick={() => remove(index)}
+                                    className="text-destructive hover:bg-destructive/10"
+                                >
+                                    <Trash2 className="w-4 h-4" />
+                                </Button>
+                            </div>
+                        ))}
+                    </div>
+                </div>
 
                 {/* Deadline Section */}
                 <div className="space-y-3">

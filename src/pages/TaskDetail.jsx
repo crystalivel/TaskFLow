@@ -43,7 +43,8 @@ export default function TaskDetail() {
                                 title: task.title,
                                 description: task.description,
                                 priority: task.priority || '',
-                                deadline: task.deadline || ''
+                                deadline: task.deadline || '',
+                                steps: task.steps || []
                             }}
                             onSubmit={handleSubmit}
                             isEditing={true}
