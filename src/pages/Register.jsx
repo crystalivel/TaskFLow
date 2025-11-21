@@ -86,6 +86,19 @@ export default function Register() {
             return
         }
 
+        // Check if user already exists
+        const registeredUsers = JSON.parse(localStorage.getItem('registeredUsers')) || []
+        const userExists = registeredUsers.some(u => u.email === form.email)
+
+        if (userExists) {
+            setGeneralError('An account with this email already exists.')
+            return
+        }
+
+        // Register new user
+        const newUser = { name: form.name, email: form.email, password: form.password }
+        localStorage.setItem('registeredUsers', JSON.stringify([...registeredUsers, newUser]))
+
         setErrors({})
         setGeneralError('')
         dispatch({ type: 'register', payload: { name: form.name, email: form.email } })

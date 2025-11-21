@@ -28,14 +28,14 @@ export default function TaskDetail() {
     if (!task) return null
 
     return (
-        <div className="min-h-screen bg-[#222831] flex flex-col items-center py-10 px-4">
+        <div className="min-h-screen bg-background flex flex-col items-center py-10 px-4">
             <div className="w-full max-w-xl">
-                <Button variant="ghost" onClick={() => navigate('/dashboard')} className="mb-4 text-[#00ADB5] hover:bg-[#393E46]">
+                <Button variant="ghost" onClick={() => navigate('/dashboard')} className="mb-4 text-primary hover:bg-muted">
                     ← Back to Dashboard
                 </Button>
-                <Card className="bg-[#393E46] border-[#00ADB5]">
+                <Card className="bg-card border-primary">
                     <CardHeader>
-                        <CardTitle className="text-[#EEEEEE]">Edit Task</CardTitle>
+                        <CardTitle className="text-foreground">Edit Task</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <TaskForm

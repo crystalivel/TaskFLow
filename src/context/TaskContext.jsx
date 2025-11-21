@@ -1,4 +1,5 @@
-import React, { createContext, useReducer, useEffect, useContext } from 'react'
+import React, { createContext, useReducer, useEffect, useContext, useMemo } from 'react'
+import { AuthContext } from './AuthContext'
 
 const TaskContext = createContext()
 
@@ -36,13 +37,16 @@ const taskReducer = (state, action) => {
 
 export const TaskProvider = ({ children }) => {
     const [state, dispatch] = useReducer(taskReducer, initialState)
+    const { state: authState } = useContext(AuthContext)
+    const userEmail = authState.user?.email
 
     useEffect(() => {
         localStorage.setItem('tasks', JSON.stringify(state.tasks))
     }, [state.tasks])
 
     const addTask = (task) => {
-        dispatch({ type: 'ADD_TASK', payload: { ...task, id: Date.now().toString(), completed: false } })
+        if (!userEmail) return
+        dispatch({ type: 'ADD_TASK', payload: { ...task, id: Date.now().toString(), completed: false, userEmail } })
     }
 
     const editTask = (task) => {
@@ -71,9 +75,15 @@ export const TaskProvider = ({ children }) => {
         }
     }
 
+    // Filter tasks for the current user
+    const userTasks = useMemo(() => {
+        if (!userEmail) return []
+        return state.tasks.filter(task => task.userEmail === userEmail)
+    }, [state.tasks, userEmail])
+
     return (
         <TaskContext.Provider value={{
-            tasks: state.tasks,
+            tasks: userTasks,
             addTask,
             editTask,
             deleteTask,

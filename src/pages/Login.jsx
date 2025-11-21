@@ -75,9 +75,18 @@ export default function Login() {
             return
         }
 
+        // Verify credentials
+        const registeredUsers = JSON.parse(localStorage.getItem('registeredUsers')) || []
+        const user = registeredUsers.find(u => u.email === form.email && u.password === form.password)
+
+        if (!user) {
+            setGeneralError('Invalid email or password.')
+            return
+        }
+
         setErrors({})
         setGeneralError('')
-        dispatch({ type: 'login', payload: { email: form.email } })
+        dispatch({ type: 'login', payload: { name: user.name, email: user.email } })
         navigate('/dashboard')
     }
 

@@ -113,12 +113,12 @@ export default function TaskForm({ defaultValues, onSubmit, isEditing = false })
                         name="title"
                         render={({ field }) => (
                             <FormItem className="flex-1">
-                                <FormLabel className="text-[#EEEEEE]">Title</FormLabel>
+                                <FormLabel className="text-foreground">Title</FormLabel>
                                 <FormControl>
                                     <Input
                                         placeholder="Task title"
                                         {...field}
-                                        className="bg-[#222831] border-[#393E46] text-[#EEEEEE] placeholder:text-[#EEEEEE]/50 focus:border-[#00ADB5]"
+                                        className="bg-background border-input text-foreground placeholder:text-muted-foreground focus:border-primary"
                                     />
                                 </FormControl>
                                 <FormMessage />
@@ -130,21 +130,21 @@ export default function TaskForm({ defaultValues, onSubmit, isEditing = false })
                         name="priority"
                         render={({ field }) => (
                             <FormItem className="w-48">
-                                <FormLabel className="text-[#EEEEEE]">Priority</FormLabel>
+                                <FormLabel className="text-foreground">Priority</FormLabel>
                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                                     <FormControl>
-                                        <SelectTrigger className="bg-[#222831] border-[#393E46] text-[#EEEEEE] focus:border-[#00ADB5]">
+                                        <SelectTrigger className="bg-background border-input text-foreground focus:border-primary">
                                             <SelectValue placeholder="Priority" />
                                         </SelectTrigger>
                                     </FormControl>
-                                    <SelectContent className="bg-[#393E46] border-[#00ADB5]">
-                                        <SelectItem value="low" className="text-[#EEEEEE] focus:bg-[#222831] focus:text-[#00ADB5]">
+                                    <SelectContent className="bg-popover border-border">
+                                        <SelectItem value="low" className="text-popover-foreground focus:bg-accent focus:text-accent-foreground">
                                             Low
                                         </SelectItem>
-                                        <SelectItem value="medium" className="text-[#EEEEEE] focus:bg-[#222831] focus:text-[#00ADB5]">
+                                        <SelectItem value="medium" className="text-popover-foreground focus:bg-accent focus:text-accent-foreground">
                                             Medium
                                         </SelectItem>
-                                        <SelectItem value="high" className="text-[#EEEEEE] focus:bg-[#222831] focus:text-[#00ADB5]">
+                                        <SelectItem value="high" className="text-popover-foreground focus:bg-accent focus:text-accent-foreground">
                                             High
                                         </SelectItem>
                                     </SelectContent>
@@ -160,12 +160,12 @@ export default function TaskForm({ defaultValues, onSubmit, isEditing = false })
                     name="description"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel className="text-[#EEEEEE]">Description</FormLabel>
+                            <FormLabel className="text-foreground">Description</FormLabel>
                             <FormControl>
                                 <Textarea
                                     placeholder="Task description"
                                     {...field}
-                                    className="bg-[#222831] border-[#393E46] text-[#EEEEEE] placeholder:text-[#EEEEEE]/50 focus:border-[#00ADB5] min-h-[100px]"
+                                    className="bg-background border-input text-foreground placeholder:text-muted-foreground focus:border-primary min-h-[100px]"
                                 />
                             </FormControl>
                             <FormMessage />
@@ -175,7 +175,7 @@ export default function TaskForm({ defaultValues, onSubmit, isEditing = false })
 
                 {/* Deadline Section */}
                 <div className="space-y-3">
-                    <FormLabel className="text-[#EEEEEE]">Deadline</FormLabel>
+                    <FormLabel className="text-foreground">Deadline</FormLabel>
 
                     {/* Date and Time - Date separate, Hour/Minute grouped */}
                     <div className="flex gap-4">
@@ -184,12 +184,12 @@ export default function TaskForm({ defaultValues, onSubmit, isEditing = false })
                             name="deadlineDate"
                             render={({ field }) => (
                                 <FormItem className="flex-1">
-                                    <FormLabel className="text-[#EEEEEE]/70 text-sm">Date</FormLabel>
+                                    <FormLabel className="text-muted-foreground text-sm">Date</FormLabel>
                                     <FormControl>
                                         <Input
                                             type="date"
                                             {...field}
-                                            className="bg-[#222831] border-[#393E46] text-[#EEEEEE] focus:border-[#00ADB5]"
+                                            className="bg-background border-input text-foreground focus:border-primary"
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -202,19 +202,19 @@ export default function TaskForm({ defaultValues, onSubmit, isEditing = false })
                                 name="deadlineHour"
                                 render={({ field }) => (
                                     <FormItem className="w-24">
-                                        <FormLabel className="text-[#EEEEEE]/70 text-sm">Hour</FormLabel>
+                                        <FormLabel className="text-muted-foreground text-sm">Hour</FormLabel>
                                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                                             <FormControl>
-                                                <SelectTrigger className="bg-[#222831] border-[#393E46] text-[#EEEEEE] focus:border-[#00ADB5]">
+                                                <SelectTrigger className="bg-background border-input text-foreground focus:border-primary">
                                                     <SelectValue placeholder="HH" />
                                                 </SelectTrigger>
                                             </FormControl>
-                                            <SelectContent className="bg-[#393E46] border-[#00ADB5] max-h-[200px]">
+                                            <SelectContent className="bg-popover border-border max-h-[200px]">
                                                 {hours.map((hour) => (
                                                     <SelectItem
                                                         key={hour}
                                                         value={hour}
-                                                        className="text-[#EEEEEE] focus:bg-[#222831] focus:text-[#00ADB5]"
+                                                        className="text-popover-foreground focus:bg-accent focus:text-accent-foreground"
                                                     >
                                                         {hour}:00
                                                     </SelectItem>
@@ -230,19 +230,19 @@ export default function TaskForm({ defaultValues, onSubmit, isEditing = false })
                                 name="deadlineMinute"
                                 render={({ field }) => (
                                     <FormItem className="w-24">
-                                        <FormLabel className="text-[#EEEEEE]/70 text-sm">Minute</FormLabel>
+                                        <FormLabel className="text-muted-foreground text-sm">Minute</FormLabel>
                                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                                             <FormControl>
-                                                <SelectTrigger className="bg-[#222831] border-[#393E46] text-[#EEEEEE] focus:border-[#00ADB5]">
+                                                <SelectTrigger className="bg-background border-input text-foreground focus:border-primary">
                                                     <SelectValue placeholder="MM" />
                                                 </SelectTrigger>
                                             </FormControl>
-                                            <SelectContent className="bg-[#393E46] border-[#00ADB5]">
+                                            <SelectContent className="bg-popover border-border">
                                                 {minutes.map((minute) => (
                                                     <SelectItem
                                                         key={minute}
                                                         value={minute}
-                                                        className="text-[#EEEEEE] focus:bg-[#222831] focus:text-[#00ADB5]"
+                                                        className="text-popover-foreground focus:bg-accent focus:text-accent-foreground"
                                                     >
                                                         :{minute}
                                                     </SelectItem>
@@ -256,12 +256,12 @@ export default function TaskForm({ defaultValues, onSubmit, isEditing = false })
                         </div>
                     </div>
 
-                    <FormDescription className="text-[#EEEEEE]/50">
+                    <FormDescription className="text-muted-foreground">
                         Date defaults to today. Select hour and minute (5-min intervals) for the deadline time.
                     </FormDescription>
                 </div>
 
-                <Button type="submit" className="bg-[#00ADB5] hover:bg-[#00ADB5]/90 text-[#222831] w-full">
+                <Button type="submit" className="bg-primary hover:bg-primary/90 text-primary-foreground w-full">
                     {isEditing ? 'Update Task' : 'Add Task'}
                 </Button>
             </form>
